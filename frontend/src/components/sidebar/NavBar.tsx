@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../lib/contexts";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+  };
 
   return (
     <nav className="bg-gray-800 text-white">
@@ -55,15 +62,59 @@ export default function Navbar() {
             >
               Kontakt Os
             </Link>
+            <div className="block mt-5 md:hidden">
+              {isLoggedIn ? (
+                <>
+                  <Link
+                    to="/dashboard"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 mr-5 py-2 rounded-md text-sm font-medium"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    to="/login"
+                    onClick={handleLogout}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Log out
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Log in
+                </Link>
+              )}
+            </div>
           </div>
         </div>
         <div className="hidden md:block">
-          <Link
-            to="/dashboard"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
-          >
-            Log Ind
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-3 mr-5 py-2 rounded-md text-sm font-medium"
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/login"
+                onClick={handleLogout}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Log out
+              </Link>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Log in
+            </Link>
+          )}
         </div>
       </div>
     </nav>

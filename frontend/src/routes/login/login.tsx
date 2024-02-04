@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../lib/contexts";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setLoggedIn } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -30,6 +32,7 @@ const LoginPage = () => {
       .then((data) => {
         console.log("Success:", data);
         localStorage.setItem("token", data.token);
+        setLoggedIn(true);
         navigate("/dashboard");
       })
       .catch((error) => {
