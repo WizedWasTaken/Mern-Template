@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { UserSchema } from "../models/userModel";
+import bcrypt from "bcrypt";
 
 const User = mongoose.model("User", UserSchema);
 
@@ -11,11 +12,27 @@ const User = mongoose.model("User", UserSchema);
  **/
 export const createUser = async (req, res) => {
   try {
-    const newUser = new User(req.body);
+    const { username, email, password } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Username already exists" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
     const savedUser = await newUser.save();
+
     res.json(savedUser);
   } catch (err) {
-    res.send(err);
+    res.status(500).send(err);
   }
 };
 

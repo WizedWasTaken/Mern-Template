@@ -9,7 +9,7 @@ import { loginWithEmail } from "../controllers/loginController.js";
 
 const routes = (app) => {
   // POST Endpoint
-  app.route("/user").post(createUser);
+  app.route("/signup").post(createUser);
 
   // GET Endpoint
   app.route("/users").get(getUsers);
