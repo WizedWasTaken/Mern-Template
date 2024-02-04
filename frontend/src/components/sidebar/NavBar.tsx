@@ -6,7 +6,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-800 text-white">
-      <div className="container mx-auto px-6 py-3 md:flex md:justify-between md:items-center">
+      <div className="px-10 py-6 md:flex md:justify-between md:items-center">
         <div className="flex justify-between items-center">
           <div>
             <Link
@@ -56,14 +56,14 @@ export default function Navbar() {
               Kontakt Os
             </Link>
           </div>
-          <div className="hidden md:block">
-            <Link
-              to="/dashboard"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
-            >
-              Log Ind
-            </Link>
-          </div>
+        </div>
+        <div className="hidden md:block">
+          <Link
+            to="/dashboard"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+          >
+            Log Ind
+          </Link>
         </div>
       </div>
     </nav>

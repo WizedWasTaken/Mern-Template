@@ -25,6 +25,12 @@ const UserSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    // Ikke send password tilbage til frontend
+    toJSON: {
+      transform(doc, ret) {
+        delete ret.password;
+      },
+    },
   }
 );
 

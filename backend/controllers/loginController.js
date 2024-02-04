@@ -16,10 +16,13 @@ export const loginWithUsername = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     //   User can be null if username isn't in DB.
-    if (user != undefined && checkPassword(req.body.password, user.password)) {
-      res.json(user);
+    if (
+      user != undefined &&
+      (await checkPassword(req.body.password, user.password))
+    ) {
+      res.status(200).json(user);
     } else {
-      res.json({ message: "Incorrect password" });
+      res.status(404).json({ message: "Incorrect password" });
     }
   } catch (err) {
     res.send(err);
@@ -36,10 +39,13 @@ export const loginWithEmail = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     //   User can be null if username isn't in DB.
-    if (user != undefined && checkPassword(req.body.password, user.password)) {
-      res.json(user);
+    if (
+      user != undefined &&
+      (await checkPassword(req.body.password, user.password))
+    ) {
+      res.status(200).json(user);
     } else {
-      res.json({ message: "Incorrect password" });
+      res.status(401).json({ message: "Incorrect password" });
     }
   } catch (err) {
     res.send(err);
