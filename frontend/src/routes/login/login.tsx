@@ -13,6 +13,7 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    // Create New Account
     fetch("http://localhost:4000/login", {
       method: "POST",
       headers: {
@@ -22,11 +23,7 @@ const LoginPage = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          if (response.status === 401) {
-            alert("Invalid credentials");
-            return;
-          }
-          throw new Error("Network response was not ok");
+          throw new Error("Invalid credentials");
         }
         return response.json();
       })
@@ -37,7 +34,7 @@ const LoginPage = () => {
         navigate("/dashboard");
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert(error.message);
       });
   };
 

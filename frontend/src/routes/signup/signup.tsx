@@ -23,10 +23,7 @@ const LoginPage = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          if (response.status === 401) {
-            throw new Error("Brugernavn eller email findes allerede");
-          }
-          throw new Error("Network response was not ok");
+          throw new Error("Brugernavn eller email findes allerede");
         }
         return response.json();
       })
@@ -34,7 +31,9 @@ const LoginPage = () => {
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
         /* TODO: Fix det her lorte kontekst */
+        // Object
         console.log(data);
+        // Undefined
         console.log(data.user);
         setUser(data.user);
         navigate("/dashboard");
