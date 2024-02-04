@@ -16,7 +16,7 @@ export const createUser = async (req, res) => {
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username already exists" });
+      return res.status(401).json({ message: "Username already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -32,7 +32,7 @@ export const createUser = async (req, res) => {
 
     res.json(savedUser);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(401).send(err);
   }
 };
 

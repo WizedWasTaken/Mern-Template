@@ -19,7 +19,7 @@ export interface ErrorType {
  * @typedef {UserType}
  */
 export interface UserType {
-  id: number;
+  _id: string;
   username: string;
   password: string;
   email: string;

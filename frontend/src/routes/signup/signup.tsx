@@ -1,16 +1,17 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../lib/contexts";
+import { AuthContext, UserContext } from "../../lib/contexts";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const { setLoggedIn } = useContext(AuthContext);
+  const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
 
     fetch("http://localhost:4000/signup", {
@@ -23,21 +24,23 @@ const LoginPage = () => {
       .then((response) => {
         if (!response.ok) {
           if (response.status === 401) {
-            alert("FEJL");
-            return;
+            throw new Error("Brugernavn eller email findes allerede");
           }
           throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
+        /* TODO: Fix det her lorte kontekst */
+        console.log(data);
+        console.log(data.user);
+        setUser(data.user);
         navigate("/dashboard");
       })
       .catch((error) => {
-        console.error("Error:", error);
+        alert(error.message);
       });
   };
 
@@ -51,7 +54,7 @@ const LoginPage = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleLogin}>
+          <form className="space-y-6" onSubmit={handleSignup}>
             <div>
               <label
                 htmlFor="email"
