@@ -5,7 +5,7 @@ import {
   deleteUserById,
 } from "../controllers/userControllers.js";
 
-import { loginWithUsername } from "../controllers/loginController.js";
+import { loginWithEmail } from "../controllers/loginController.js";
 
 const routes = (app) => {
   // POST Endpoint
@@ -16,7 +16,7 @@ const routes = (app) => {
 
   app.route("/user/:userId").put(updateUser).delete(deleteUserById);
 
-  app.route("/login").post(loginWithUsername);
+  app.route("/login").post(loginWithEmail);
 };
 
 export default routes;

@@ -16,7 +16,27 @@ export const loginWithUsername = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     //   User can be null if username isn't in DB.
-    if (user != undefined && checkPassword(req.body.password)) {
+    if (user != undefined && checkPassword(req.body.password, user.password)) {
+      res.json(user);
+    } else {
+      res.json({ message: "Incorrect password" });
+    }
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+/**
+ * Login With Email
+ * @date 2/4/2024 - 2:26:41 PM
+ *
+ * @async
+ **/
+export const loginWithEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    //   User can be null if username isn't in DB.
+    if (user != undefined && checkPassword(req.body.password, user.password)) {
       res.json(user);
     } else {
       res.json({ message: "Incorrect password" });
