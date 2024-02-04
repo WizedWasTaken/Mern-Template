@@ -11,6 +11,8 @@ import ErrorPage from "./error-page";
 // Pages
 import Contact from "./routes/contact/contact";
 import Users from "./routes/users/users";
+import Dashboard from "./routes/dashboard/dashboard";
+import LoginPage from "./routes/login/login";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <Users />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },
