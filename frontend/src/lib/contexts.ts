@@ -10,15 +10,9 @@ export const AuthContext = React.createContext<{
 });
 
 export const UserContext = React.createContext<{
-  user: UserType;
-  setUser: Dispatch<SetStateAction<UserType>>;
+  user: UserType | null; // Allow for a null user when no user is logged in
+  setUser: Dispatch<SetStateAction<UserType | null>>; // Allow for setting the user to null when logging out
 }>({
-  user: {
-    _id: "",
-    username: "",
-    password: "",
-    email: "",
-    roles: [],
-  },
-  setUser: () => {},
+  user: null, // Start with no user logged in
+  setUser: () => {}, // Provide a no-op function as a default
 });
