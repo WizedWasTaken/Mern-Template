@@ -50,9 +50,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <div className="h-screen">
-      <RouterProvider router={router} />
-    </div>
-  </React.StrictMode>
+  <div className="h-screen">
+    <RouterProvider router={router} />
+  </div>
 );
