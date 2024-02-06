@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
-import { UserSchema } from "../models/userModel";
-import jwt from "jsonwebtoken";
-const bcrypt = require("bcrypt");
+import mongoose from 'mongoose';
+import { UserSchema } from '../models/userModel';
+import jwt from 'jsonwebtoken';
+const bcrypt = require('bcrypt');
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 /**
  * Login with email
@@ -18,15 +18,15 @@ export const loginWithEmail = async (req, res) => {
     const isValidPassword = await user.isValidPassword(req.body.password);
     // Hvis user findes i databasen og password matcher det hashede
     if (user != undefined && isValidPassword) {
-      console.log("Password accepted");
+      console.log('Password accepted');
       const token = generateToken(user);
       res.status(200).json({ user, token });
     } else {
-      console.log("Incorrect password");
-      res.status(401).json({ message: "Incorrect password" });
+      console.log('Incorrect password');
+      res.status(401).json({ message: 'Incorrect password' });
     }
   } catch (err) {
-    res.status(401).json({ message: "An error happened" });
+    res.status(401).json({ message: 'An error happened' });
   }
 };
 
@@ -39,7 +39,7 @@ export const loginWithEmail = async (req, res) => {
  */
 function generateToken(user) {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "3h",
+    expiresIn: '3h',
   });
 }
 
@@ -55,7 +55,7 @@ export const createUser = async (req, res) => {
 
     let existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(401).json({ message: "Username already exists" });
+      return res.status(401).json({ message: 'Username already exists' });
     }
 
     const newUser = new User({

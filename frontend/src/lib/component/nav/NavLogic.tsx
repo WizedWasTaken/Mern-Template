@@ -1,6 +1,6 @@
 // NavLogic.tsx
-import { useContext, useEffect, useState } from "react";
-import { AuthContext, UserContext } from "../../contexts";
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext, UserContext } from '../../contexts';
 
 const useNavLogic = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,7 @@ const useNavLogic = () => {
 
   useEffect(() => {
     const handleUserSession = () => {
-      const storedUser = sessionStorage.getItem("user");
+      const storedUser = sessionStorage.getItem('user');
       if (storedUser) {
         const { user } = JSON.parse(storedUser);
         setUser(user);
@@ -20,8 +20,8 @@ const useNavLogic = () => {
   }, [setUser]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     setUser(undefined);
     setLoggedIn(false);
   };
