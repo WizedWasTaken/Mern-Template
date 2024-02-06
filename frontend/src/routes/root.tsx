@@ -5,7 +5,8 @@ import React, { useState } from "react";
 
 export default function Root() {
   const [isLoggedIn, setLoggedIn] = useState(!!localStorage.getItem("token"));
-  const [user, setUser] = useState(!!localStorage.getItem("user"));
+  const storedUser = sessionStorage.getItem("user");
+  const [user, setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn }}>

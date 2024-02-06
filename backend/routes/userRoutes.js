@@ -1,11 +1,10 @@
 import {
-  createUser,
   getUsers,
   updateUser,
   deleteUserById,
 } from "../controllers/userControllers.js";
 
-import { loginWithEmail } from "../controllers/loginController.js";
+import { loginWithEmail, createUser } from "../controllers/loginController.js";
 
 const routes = (app) => {
   // POST Endpoint

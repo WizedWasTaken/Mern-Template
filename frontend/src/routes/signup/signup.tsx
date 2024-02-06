@@ -28,26 +28,9 @@ const LoginPage = () => {
         return response.json();
       })
       .then((data) => {
+        sessionStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
-        /*
-        Data object:
-
-        _id: "65c0d9f9486e9b1bd1d443ff"
-        createdAt: "2024-02-05T12:52:09.222Z"
-        email: "123123123@test.dk"
-        roles: Array [ "broke" ]
-        updatedAt: "2024-02-05T12:52:09.222Z"
-        username: "123123123@test.dk"
-        */
-        /* TODO: Fix det her lorte kontekst */
-
-        // ! KENNETH??? Er det fordi den returnere mere
-        // !end min userContext er villig til at modtage?
-        // Object
-        console.log(data);
-        // Undefined
-        console.log(data.user);
         setUser(data);
         navigate("/dashboard");
       })

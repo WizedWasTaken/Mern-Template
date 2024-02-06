@@ -28,9 +28,10 @@ const LoginPage = () => {
         return response.json();
       })
       .then((data) => {
+        sessionStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
-        setUser(data.user);
+        setUser(data);
         navigate("/dashboard");
       })
       .catch((error) => {

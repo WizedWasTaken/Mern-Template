@@ -12,12 +12,16 @@ const User = mongoose.model("User", UserSchema);
  * @async
  **/
 export const loginWithEmail = async (req, res) => {
+  // console.log("Login with email");
+  console.log(req.body);
   try {
     const user = await User.findOne({ email: req.body.email });
+    // console.log("User:" + user);
     if (
       user != undefined &&
       (await checkPassword(req.body.password, user.password))
     ) {
+      console.log("Password accepted");
       const token = generateToken(user);
       res.status(200).json({ user, token });
     } else {
@@ -34,20 +38,38 @@ function generateToken(user) {
   });
 }
 
-/**
- * Runs a check to see if the plain text password matches the hashed password
- * @date 2/4/2024 - 2:29:02 PM
- *
- * @async
- * @param {*} plainTextPassword
- * @param {*} hashedPassword
- * @returns {unknown}
- */
 async function checkPassword(plainTextPassword, hashedPassword) {
+  console.log(
+    `Checking password "${plainTextPassword}" against hash "${hashedPassword}"`
+  );
   const match = await bcrypt.compare(plainTextPassword, hashedPassword);
-  if (match) {
-    return true;
-  } else {
-    return false;
-  }
+  console.log("Match: " + match);
+  return match;
 }
+
+export const createUser = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(401).json({ message: "Username already exists" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    console.log(`Hashed password "${hashedPassword}" for user "${username}"`);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    const savedUser = await newUser.save();
+
+    res.json(savedUser);
+  } catch (err) {
+    res.status(401).send(err);
+  }
+};

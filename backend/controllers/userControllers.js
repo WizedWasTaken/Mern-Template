@@ -5,38 +5,6 @@ import bcrypt from "bcrypt";
 const User = mongoose.model("User", UserSchema);
 
 /**
- * Add a new user to the DB
- * @date 2/3/2024 - 11:46:48 PM
- *
- * @async
- **/
-export const createUser = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(401).json({ message: "Username already exists" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
-    const savedUser = await newUser.save();
-
-    res.json(savedUser);
-  } catch (err) {
-    res.status(401).send(err);
-  }
-};
-
-/**
  * Get all users in DB
  * @date 2/3/2024 - 11:46:32 PM
  *

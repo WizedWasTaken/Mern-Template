@@ -5,12 +5,14 @@ import { AuthContext, UserContext } from "../../lib/contexts";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   console.log(user);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    setUser(undefined);
     setLoggedIn(false);
   };
 
