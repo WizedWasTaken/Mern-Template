@@ -55,6 +55,7 @@ async function checkPassword(plainTextPassword, hashedPassword) {
   return match;
 }
 
+// TODO: Password doesn't match on login
 export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
