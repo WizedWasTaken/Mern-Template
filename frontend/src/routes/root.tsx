@@ -17,6 +17,7 @@ export default function Root() {
           </div>
           {/* Prevent overflow */}
           {/* TODO: Might cause issues later */}
+          {/* Update ^^ - did cause issues 💀 */}
           <div id="container" className="flex-grow ">
             <Outlet />
           </div>

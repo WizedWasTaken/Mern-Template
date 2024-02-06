@@ -1,6 +1,6 @@
 // NavLogic.tsx
 import { useContext, useEffect, useState } from "react";
-import { AuthContext, UserContext } from "./contexts";
+import { AuthContext, UserContext } from "../../contexts";
 
 const useNavLogic = () => {
   const [isOpen, setIsOpen] = useState(false);

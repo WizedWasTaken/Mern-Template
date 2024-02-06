@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
-import useNavLogic from "../../lib/NavLogic";
+import useNavLogic from "../../lib/component/nav/NavLogic";
+{
+  /* TODO: KESO ---> ^^ Best practice, eller findes der smartere måder? Som "@/"" i Vue? ^^
+   * Kan jeg eventuelt lave det ligesom "@/" i vue?
+   */
+}
 
 export default function Navbar() {
   const { isOpen, setIsOpen, isLoggedIn, user, handleLogout } = useNavLogic();
@@ -19,7 +24,7 @@ export default function Navbar() {
             className="text-gray-200 hover:text-gray-400 focus:outline-none focus:text-gray-400 md:hidden"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {/* SVG Icon */}
+            <p>Hamburger</p>
           </button>
         </div>
         <div
