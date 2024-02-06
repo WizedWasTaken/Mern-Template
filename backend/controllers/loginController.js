@@ -58,13 +58,15 @@ async function checkPassword(plainTextPassword, hashedPassword) {
 export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    console.log(password);
 
-    const existingUser = await User.findOne({ username });
+    let existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(401).json({ message: "Username already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 0);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     console.log(`Hashed password "${hashedPassword}" for user "${username}"`);
 
     const newUser = new User({
