@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import useNavLogic from "./NavLogic"; // Adjust the import path as necessary
+import useNavLogic from "../../lib/NavLogic";
 
 export default function Navbar() {
   const { isOpen, setIsOpen, isLoggedIn, user, handleLogout } = useNavLogic();
