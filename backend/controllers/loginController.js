@@ -42,7 +42,15 @@ async function checkPassword(plainTextPassword, hashedPassword) {
   console.log(
     `Checking password "${plainTextPassword}" against hash "${hashedPassword}"`
   );
-  const match = await bcrypt.compare(plainTextPassword, hashedPassword);
+  /*
+  { email: '123@gmail.com', password: '123' }
+  Checking password "123" against hash "$2a$10$Bte4xj4G3TkHqDSNhYwureLXVq4AZlrkwkzotZUtnKp35qpWpaH7e"
+  Match: false
+  Match: false
+  */
+  let match = false;
+  console.log("Match: " + match);
+  match = await bcrypt.compare(plainTextPassword, hashedPassword);
   console.log("Match: " + match);
   return match;
 }
