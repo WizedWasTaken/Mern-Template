@@ -12,68 +12,56 @@ const User = mongoose.model("User", UserSchema);
  * @async
  **/
 export const loginWithEmail = async (req, res) => {
-  // console.log("Login with email");
   console.log(req.body);
   try {
     const user = await User.findOne({ email: req.body.email });
-    // console.log("User:" + user);
-    if (
-      user != undefined &&
-      (await checkPassword(req.body.password, user.password))
-    ) {
+    const isValidPassword = await user.isValidPassword(req.body.password);
+    // Hvis user findes i databasen og password matcher det hashede
+    if (user != undefined && isValidPassword) {
       console.log("Password accepted");
       const token = generateToken(user);
       res.status(200).json({ user, token });
     } else {
+      console.log("Incorrect password");
       res.status(401).json({ message: "Incorrect password" });
     }
   } catch (err) {
-    res.send(err);
+    res.status(401).json({ message: "An error happened" });
   }
 };
 
+/**
+ * Generate JWT token
+ * @date 2/6/2024 - 7:53:14 PM
+ *
+ * @param {*} user
+ * @returns {*}
+ */
 function generateToken(user) {
   return jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn: "3h",
   });
 }
 
-async function checkPassword(plainTextPassword, hashedPassword) {
-  console.log(
-    `Checking password "${plainTextPassword}" against hash "${hashedPassword}"`
-  );
-  /*
-  { email: '123@gmail.com', password: '123' }
-  Checking password "123" against hash "$2a$10$Bte4xj4G3TkHqDSNhYwureLXVq4AZlrkwkzotZUtnKp35qpWpaH7e"
-  Match: false
-  Match: false
-  */
-  let match = false;
-  console.log("Match: " + match);
-  match = await bcrypt.compare(plainTextPassword, hashedPassword);
-  console.log("Match: " + match);
-  return match;
-}
-
-// TODO: Password doesn't match on login
+/**
+ * Function to create a new user
+ * @date 2/6/2024 - 7:53:30 PM
+ *
+ * @async
+ **/
 export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-    console.log(password);
 
     let existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(401).json({ message: "Username already exists" });
     }
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log(`Hashed password "${hashedPassword}" for user "${username}"`);
-
     const newUser = new User({
       username,
       email,
-      password: hashedPassword,
+      password,
     });
 
     const savedUser = await newUser.save();

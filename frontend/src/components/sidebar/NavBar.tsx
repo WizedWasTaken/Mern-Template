@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext, UserContext } from "../../lib/contexts";
 
@@ -7,14 +7,25 @@ export default function Navbar() {
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
   const { user, setUser } = useContext(UserContext);
 
-  console.log(user);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     sessionStorage.removeItem("user");
     setUser(undefined);
     setLoggedIn(false);
   };
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem("user");
+    console.log(storedUser);
+    setUser(storedUser ? JSON.parse(storedUser).user : null);
+  }, []);
+
+  useEffect(() => {
+    console.log("User Context: ", user);
+    if (user?.roles) {
+      console.log("Roles: ", user.roles);
+    }
+  }, [user]);
 
   return (
     <nav className="bg-gray-800 text-white">
@@ -70,6 +81,16 @@ export default function Navbar() {
             <div className="block mt-5 md:hidden">
               {isLoggedIn ? (
                 <>
+                  {/* Permission check */}
+                  {user?.roles?.includes("ceo") && (
+                    <Link
+                      to="/create"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 mr-5 py-2 rounded-md text-sm font-medium"
+                    >
+                      Admin
+                    </Link>
+                  )}
+
                   <Link
                     to="/dashboard"
                     className="bg-blue-500 hover:bg-blue-600 text-white px-3 mr-5 py-2 rounded-md text-sm font-medium"
@@ -111,6 +132,15 @@ export default function Navbar() {
               >
                 Log out
               </Link>
+
+              {user?.roles?.includes("ceo") && (
+                <Link
+                  to="/create"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Admin
+                </Link>
+              )}
             </>
           ) : (
             <Link

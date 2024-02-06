@@ -22,6 +22,7 @@ const LoginPage = () => {
       body: JSON.stringify({ email, password }),
     })
       .then((response) => {
+        console.log(response);
         if (!response.ok) {
           throw new Error("Invalid credentials");
         }
@@ -31,6 +32,7 @@ const LoginPage = () => {
         sessionStorage.setItem("user", JSON.stringify(data));
         localStorage.setItem("token", data.token);
         setLoggedIn(true);
+        console.log(data);
         setUser(data);
         navigate("/dashboard");
       })

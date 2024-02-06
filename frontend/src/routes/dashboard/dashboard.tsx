@@ -1,19 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext, AuthContext } from "../../lib/contexts";
 
 // Types
 import { ErrorType, UserType } from "../../lib/definitions";
 
 function UsersPage() {
   const [users, setUsers] = useState<UserType[]>([]);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isUserLoggedIn, setisUserLoggedIn] = useState<boolean>(false);
+  const { user, setUser } = useContext(UserContext);
+  const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
   const apiUrl = import.meta.env.VITE_API_URL as string;
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      setIsLoggedIn(true);
+      setisUserLoggedIn(true);
     } else {
       navigate("/login");
     }
@@ -30,7 +33,23 @@ function UsersPage() {
     }
   }, [apiUrl, isLoggedIn, navigate]);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    setUser(undefined);
+    setLoggedIn(false);
+  };
+
   const deleteUser = (id: string) => {
+    if (user._id === id) {
+      handleLogout();
+    }
+
+    if (user.roles.includes("ceo")) {
+      alert("Du kan ikke slette admin brugeren");
+      return;
+    }
+
     fetch(`${apiUrl}/user/${id}`, {
       method: "DELETE",
     })
@@ -43,7 +62,7 @@ function UsersPage() {
   };
 
   return (
-    isLoggedIn && (
+    isUserLoggedIn && (
       <div className="grid grid-cols-3 gap-4 p-4 bg-gray-200">
         <h1 className="col-span-full mb-6 text-5xl font-bold text-gray-700">
           Users
