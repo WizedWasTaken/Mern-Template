@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
-import { UserSchema } from "../models/userModel";
-import bcrypt from "bcrypt";
+import mongoose from 'mongoose';
+import { UserSchema } from '../models/userModel';
+import bcrypt from 'bcrypt';
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 /**
  * Get all users in DB
@@ -52,7 +52,7 @@ export const deleteUserById = async (req, res) => {
     await User.deleteOne({
       _id: req.params.userId,
     });
-    res.json("User deleted successfully!");
+    res.json('User deleted successfully!');
   } catch (err) {
     res.send(err);
   }
