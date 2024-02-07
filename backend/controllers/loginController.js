@@ -12,11 +12,9 @@ const User = mongoose.model("User", UserSchema);
  * @async
  **/
 export const loginWithEmail = async (req, res) => {
-  // console.log("Login with email");
   console.log(req.body);
   try {
     const user = await User.findOne({ email: req.body.email });
-    // console.log("User:" + user);
     if (
       user != undefined &&
       (await checkPassword(req.body.password, user.password))
@@ -42,12 +40,6 @@ async function checkPassword(plainTextPassword, hashedPassword) {
   console.log(
     `Checking password "${plainTextPassword}" against hash "${hashedPassword}"`
   );
-  /*
-  { email: '123@gmail.com', password: '123' }
-  Checking password "123" against hash "$2a$10$Bte4xj4G3TkHqDSNhYwureLXVq4AZlrkwkzotZUtnKp35qpWpaH7e"
-  Match: false
-  Match: false
-  */
   let match = false;
   console.log("Match: " + match);
   match = await bcrypt.compare(plainTextPassword, hashedPassword);
@@ -55,7 +47,6 @@ async function checkPassword(plainTextPassword, hashedPassword) {
   return match;
 }
 
-// TODO: Password doesn't match on login
 export const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
