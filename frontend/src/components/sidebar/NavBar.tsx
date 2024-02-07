@@ -19,31 +19,34 @@ export default function Navbar() {
           >
             Template
           </Link>
-          <button
-            type='button'
-            className='text-gray-200 hover:text-gray-400 focus:outline-none focus:text-gray-400 md:hidden'
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <p>Hamburger</p>
-          </button>
+          <div className='md:hidden'>
+            <HamburgerButton
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+            />
+          </div>
         </div>
 
         <div
-          className={`md:flex items-center ${
+          className={`md:flex items-center justify-between w-full ${
             isOpen ? 'block' : 'hidden'
           } mt-4 md:mt-0`}
         >
           {/* Navigation Links */}
-          <LinkGroup />
-          {/* Conditional User Links */}
-          {isLoggedIn ? (
-            <UserLinks
-              user={user}
-              onLogout={handleLogout}
-            />
-          ) : (
-            <LoginLink />
-          )}
+          <div className='md:flex-grow md:flex md:justify-center'>
+            <LinkGroup />
+          </div>
+          <div className='md:flex sm:mt-5 md:mt-0 md:justify-end'>
+            {/* Conditional User Links */}
+            {isLoggedIn ? (
+              <UserLinks
+                user={user}
+                onLogout={handleLogout}
+              />
+            ) : (
+              <LoginLink />
+            )}
+          </div>
         </div>
       </div>
     </nav>
@@ -82,11 +85,11 @@ function NavLink({ to, label }) {
 
 function UserLinks({ user, onLogout }) {
   return (
-    <>
+    <div className='flex'>
       {user?.roles?.includes('ceo') && <AdminLink />}
       <DashboardLink />
       <LogoutButton onLogout={onLogout} />
-    </>
+    </div>
   );
 }
 
@@ -131,5 +134,37 @@ function LoginLink() {
     >
       Log in
     </Link>
+  );
+}
+
+// TODO: Animate hamburger menu, button is animated.
+function HamburgerButton({ isOpen, setIsOpen }) {
+  const genericHamburgerLine = `h-1 w-8 my-1 rounded-full bg-white transition ease transform duration-300`;
+
+  return (
+    <button
+      className='flex flex-col h-12 w-12 justify-center items-center group'
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      <div
+        className={`${genericHamburgerLine} ${
+          isOpen
+            ? 'rotate-45 translate-y-3 opacity-50 group-hover:opacity-100'
+            : 'opacity-50 group-hover:opacity-100'
+        }`}
+      />
+      <div
+        className={`${genericHamburgerLine} ${
+          isOpen ? 'opacity-0' : 'opacity-50 group-hover:opacity-100'
+        }`}
+      />
+      <div
+        className={`${genericHamburgerLine} ${
+          isOpen
+            ? '-rotate-45 -translate-y-3 opacity-50 group-hover:opacity-100'
+            : 'opacity-50 group-hover:opacity-100'
+        }`}
+      />
+    </button>
   );
 }
